@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Merry Christmas ❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f6b7c1;
+    color: #fff;
+    text-align: center;
+    overflow: hidden;
+}
+
+section {
+    display: none;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: 20px;
+}
+
+section.active {
+    display: flex;
+}
+
+button {
+    padding: 15px 35px;
+    font-size: 18px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    background: #fff;
+    color: #f38aa3;
+    margin-top: 20px;
+}
+
+h1, p {
+    margin: 10px;
+}
+
+/* Tic Tac Toe */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 80px);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.cell {
+    width: 80px;
+    height: 80px;
+    background: #fff;
+    color: #f38aa3;
+    font-size: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+/* Envelope */
+.envelope {
+    width: 200px;
+    height: 130px;
+    background: #fff;
+    border-radius: 10px;
+    position: relative;
+    cursor: pointer;
+}
+
+.envelope::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-left: 100px solid transparent;
+    border-right: 100px solid transparent;
+    border-top: 70px solid #f38aa3;
+}
+
+.message-box {
+    background: rgba(255,255,255,0.95);
+    color: #f38aa3;
+    padding: 20px;
+    border-radius: 20px;
+    max-width: 330px;
+}
+
+/* Hug GIF */
+.hug-gif {
+    width: 220px;
+    border-radius: 20px;
+    margin-top: 20px;
+}
+
+/* Snow */
+.snow {
+    position: fixed;
+    top: -10px;
+    color: white;
+    font-size: 1em;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    to { transform: translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="music" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/12/08/audio_3d24f2d0b7.mp3" type="audio/mpeg">
+</audio>
+
+<section id="start" class="active">
+    <h1>🎄 Merry Christmas 🎄</h1>
+    <button onclick="goTo('game')">Start</button>
+</section>
+
+<section id="game">
+    <h1>Let’s Play 😄</h1>
+    <div class="grid">
+        <div class="cell" onclick="win(this)">O</div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+        <div class="cell"></div>
+    </div>
+</section>
+
+<section id="envelope">
+    <h1>You Won 💕</h1>
+    <div class="envelope" onclick="goTo('message')"></div>
+    <p>Open it ✉️</p>
+</section>
+
+<section id="message">
+    <div class="message-box">
+        <p>
+        Merry Christmas . yea ik i can't make that much good things but it's just a little try ...hopefully you liked it and yk You are the best gift that i got in my life hahaha . I don't need any gift for Christmas, cause i already have you ... Take my love care and Me hehe Be safee okaay Ji???
+        </p>
+        <button onclick="goTo('final')">Continue</button>
+    </div>
+</section>
+
+<section id="final">
+    <h1>YOU ARE THE BEST &lt;3</h1>
+    <button onclick="hug()">Hug 🤍</button>
+</section>
+
+<section id="hug">
+    <h1>Sending you the warmest hug 🫂</h1>
+    <img class="hug-gif" src="https://media.tenor.com/1z7hZ9lZP1wAAAAC/teddy-bear-hug.gif" alt="Teddy Hug">
+</section>
+
+<script>
+function goTo(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.getElementById("music").play();
+
+    if (id === "final") startSnow();
+}
+
+function win(cell) {
+    if (cell.innerHTML === "O") {
+        setTimeout(() => goTo('envelope'), 800);
+    }
+}
+
+function hug() {
+    if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200, 100, 300]);
+    }
+    goTo('hug');
+}
+
+function startSnow() {
+    setInterval(() => {
+        const snow = document.createElement("div");
+        snow.className = "snow";
+        snow.innerHTML = "❄";
+        snow.style.left = Math.random() * window.innerWidth + "px";
+        snow.style.animationDuration = (Math.random() * 3 + 2) + "s";
+        document.body.appendChild(snow);
+        setTimeout(() => snow.remove(), 5000);
+    }, 200);
+}
+</script>
+
+</body>
+</html>
