@@ -39,24 +39,19 @@ button {
     margin-top: 20px;
 }
 
-h1, p {
-    margin: 10px;
-}
-
-/* Tic Tac Toe */
 .grid {
     display: grid;
-    grid-template-columns: repeat(3, 80px);
-    gap: 10px;
+    grid-template-columns: repeat(3, 90px);
+    gap: 12px;
     margin-top: 20px;
 }
 
 .cell {
-    width: 80px;
-    height: 80px;
+    width: 90px;
+    height: 90px;
     background: #fff;
     color: #f38aa3;
-    font-size: 40px;
+    font-size: 42px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,24 +59,8 @@ h1, p {
     cursor: pointer;
 }
 
-/* Envelope */
-.envelope {
-    width: 200px;
-    height: 130px;
-    background: #fff;
-    border-radius: 10px;
-    position: relative;
-    cursor: pointer;
-}
-
-.envelope::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    border-left: 100px solid transparent;
-    border-right: 100px solid transparent;
-    border-top: 70px solid #f38aa3;
+.cell.win {
+    background: #ffd1dc;
 }
 
 .message-box {
@@ -92,14 +71,12 @@ h1, p {
     max-width: 330px;
 }
 
-/* Hug GIF */
 .hug-gif {
-    width: 220px;
+    width: 260px;
     border-radius: 20px;
     margin-top: 20px;
 }
 
-/* Snow */
 .snow {
     position: fixed;
     top: -10px;
@@ -116,9 +93,9 @@ h1, p {
 
 <body>
 
-<!-- Background Music -->
+<!-- 🎄 Christmas Piano Music -->
 <audio id="music" loop>
-  <source src="https://cdn.pixabay.com/download/audio/2022/12/08/audio_3d24f2d0b7.mp3" type="audio/mpeg">
+  <source src="https://cdn.pixabay.com/download/audio/2022/12/15/audio_51d0b7b9a5.mp3" type="audio/mpeg">
 </audio>
 
 <section id="start" class="active">
@@ -127,24 +104,13 @@ h1, p {
 </section>
 
 <section id="game">
-    <h1>Let’s Play 😄</h1>
-    <div class="grid">
-        <div class="cell" onclick="win(this)">O</div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-        <div class="cell"></div>
-    </div>
+    <h1>Let’s Play Tic Tac Toe 😄</h1>
+    <div class="grid" id="board"></div>
 </section>
 
 <section id="envelope">
     <h1>You Won 💕</h1>
-    <div class="envelope" onclick="goTo('message')"></div>
-    <p>Open it ✉️</p>
+    <button onclick="goTo('message')">Open Envelope ✉️</button>
 </section>
 
 <section id="message">
@@ -163,10 +129,43 @@ h1, p {
 
 <section id="hug">
     <h1>Sending you the warmest hug 🫂</h1>
-    <img class="hug-gif" src="https://media.tenor.com/1z7hZ9lZP1wAAAAC/teddy-bear-hug.gif" alt="Teddy Hug">
+
+    <!-- 💗 YOUR GIF (ALREADY FIXED) -->
+    <img class="hug-gif" 
+    src="https://drive.google.com/uc?export=view&id=1vRyv6_aSG0GdcQYCJ9DTnzfypnTMdGue" 
+    alt="Cute Hug">
 </section>
 
 <script>
+let board = document.getElementById("board");
+let clicked = false;
+
+for (let i = 0; i < 9; i++) {
+    let cell = document.createElement("div");
+    cell.className = "cell";
+    cell.onclick = () => play(cell, i);
+    board.appendChild(cell);
+}
+
+function play(cell) {
+    if (clicked) return;
+    clicked = true;
+
+    cell.innerHTML = "O";
+
+    setTimeout(() => {
+        let cells = document.querySelectorAll(".cell");
+        cells[0].innerHTML = "O";
+        cells[4].innerHTML = "O";
+        cells[8].innerHTML = "O";
+        cells[0].classList.add("win");
+        cells[4].classList.add("win");
+        cells[8].classList.add("win");
+
+        setTimeout(() => goTo('envelope'), 1200);
+    }, 600);
+}
+
 function goTo(id) {
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
@@ -175,15 +174,9 @@ function goTo(id) {
     if (id === "final") startSnow();
 }
 
-function win(cell) {
-    if (cell.innerHTML === "O") {
-        setTimeout(() => goTo('envelope'), 800);
-    }
-}
-
 function hug() {
     if (navigator.vibrate) {
-        navigator.vibrate([200, 100, 200, 100, 300]);
+        navigator.vibrate([200,100,200,100,300]);
     }
     goTo('hug');
 }
